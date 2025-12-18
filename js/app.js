@@ -30,20 +30,24 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// Load featured products on home page (Clothing only)
+// Load featured products on home page (Hoodies and T-Shirts only)
 if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
     document.addEventListener('DOMContentLoaded', () => {
         try {
             const allProducts = getAllProducts();
-            // Filter to show only Clothing category
-            const clothingProducts = allProducts.filter(p => p.category === 'Clothing');
+            // Filter to show only Hoodies and T-Shirts
+            const featuredProducts = allProducts.filter(p =>
+                p.name.toLowerCase().includes('hoodie') ||
+                p.name.toLowerCase().includes('tee') ||
+                p.name.toLowerCase().includes('t-shirt')
+            );
             const container = document.getElementById('featured-products');
 
             if (container) {
                 container.innerHTML = '';
 
-                // Show all clothing products (6 bamboo items)
-                clothingProducts.forEach(product => {
+                // Show hoodies and t-shirts only
+                featuredProducts.forEach(product => {
                     const card = createProductCard(product);
                     container.appendChild(card);
                 });
