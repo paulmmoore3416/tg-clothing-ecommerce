@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - TG Clothing Co.</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>🛒 TG Clothing Co.</h1>
+                    <p class="tagline">Clothing Created By Travelers, For Travelers</p>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html" class="active">Products</a>
+                    <a href="cart.html">Cart <span id="cart-count" class="badge">0</span></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="products-header">
+            <h2>Our Products</h2>
+            <div class="filters">
+                <select id="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                     <option value="Clothing">Clothing</option>
+                    <option value="Office">Office</option>
+                </select>
+                <input type="text" id="search" placeholder="Search products...">
+            </div>
+        </section>
+
+        <div id="products-container" class="product-grid">
+            <div class="loading">Loading products...</div>
+        </div>
+
+        <div id="notification" class="notification"></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TG Clothing Co.. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="products-data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>
