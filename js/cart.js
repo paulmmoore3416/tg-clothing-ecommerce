@@ -117,12 +117,6 @@ function checkoutHandler() {
         return;
     }
 
-    // For demo purposes, just show success message
-    const total = cart.reduce((sum, item) => sum + item.subtotal, 0);
-    alert(`Order placed successfully!\nTotal: ${formatCurrency(total)}\n\nThank you for your purchase!`);
-
-    // Clear cart after checkout
-    clearCart();
-    loadCart();
-    updateCartCount();
+    // Redirect to checkout page
+    window.location.href = 'checkout.html';
 }

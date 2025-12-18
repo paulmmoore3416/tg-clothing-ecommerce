@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - TG Clothing Co.</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    <!-- Square Web Payments SDK -->
+    <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>🛒 TG Clothing Co.</h1>
+                    <p class="tagline">Clothing Created By Travelers, For Travelers</p>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Cart <span id="cart-count" class="badge">0</span></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h2>Secure Checkout</h2>
+                <div class="checkout-steps">
+                    <div class="step active">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Account</span>
+                    </div>
+                    <div class="step" id="step-shipping">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Shipping</span>
+                    </div>
+                    <div class="step" id="step-payment">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Payment</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-content">
+                <!-- Left Column: Forms -->
+                <div class="checkout-forms">
+
+                    <!-- Step 1: Account Section -->
+                    <section id="account-section" class="checkout-section">
+                        <h3>Account Information</h3>
+                        <div class="auth-tabs">
+                            <button class="tab-btn active" onclick="showAuthTab('signin')">Sign In</button>
+                            <button class="tab-btn" onclick="showAuthTab('guest')">Guest Checkout</button>
+                            <button class="tab-btn" onclick="showAuthTab('register')">Create Account</button>
+                        </div>
+
+                        <!-- Sign In Form -->
+                        <div id="signin-form" class="auth-form active">
+                            <div class="form-group">
+                                <label for="signin-email">Email Address</label>
+                                <input type="email" id="signin-email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signin-password">Password</label>
+                                <input type="password" id="signin-password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="form-actions">
+                                <a href="#" class="forgot-password">Forgot password?</a>
+                                <button type="button" class="btn btn-primary" onclick="handleSignIn()">Sign In</button>
+                            </div>
+                        </div>
+
+                        <!-- Guest Form -->
+                        <div id="guest-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="guest-email">Email Address</label>
+                                <input type="email" id="guest-email" placeholder="your@email.com" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="continueAsGuest()">Continue as Guest</button>
+                        </div>
+
+                        <!-- Register Form -->
+                        <div id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="register-name">Full Name</label>
+                                <input type="text" id="register-name" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-email">Email Address</label>
+                                <input type="email" id="register-email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" id="register-password" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-confirm">Confirm Password</label>
+                                <input type="password" id="register-confirm" placeholder="Confirm password" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="handleRegister()">Create Account & Continue</button>
+                        </div>
+                    </section>
+
+                    <!-- Step 2: Shipping Section -->
+                    <section id="shipping-section" class="checkout-section" style="display: none;">
+                        <h3>Shipping Information</h3>
+                        <form id="shipping-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="first-name">First Name *</label>
+                                    <input type="text" id="first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name">Last Name *</label>
+                                    <input type="text" id="last-name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Street Address *</label>
+                                <input type="text" id="address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address2">Apartment, suite, etc. (optional)</label>
+                                <input type="text" id="address2">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">City *</label>
+                                    <input type="text" id="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State *</label>
+                                    <select id="state" required>
+                                        <option value="">Select State</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="CA">California</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="NY">New York</option>
+                                        <option value="TX">Texas</option>
+                                        <!-- Add more states as needed -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zip">ZIP Code *</label>
+                                    <input type="text" id="zip" pattern="[0-9]{5}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" placeholder="(555) 123-4567" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="goToStep('account')">Back</button>
+                                <button type="button" class="btn btn-primary" onclick="proceedToPayment()">Continue to Payment</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Step 3: Payment Section -->
+                    <section id="payment-section" class="checkout-section" style="display: none;">
+                        <h3>Payment Information</h3>
+                        <div class="payment-secure">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 1L3 5V9C3 13.55 6.84 17.74 10 19C13.16 17.74 17 13.55 17 9V5L10 1Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" fill="none"/>
+                            </svg>
+                            <span>Secure payment powered by Square</span>
+                        </div>
+
+                        <!-- Square Payment Form -->
+                        <div id="payment-form">
+                            <div id="card-container"></div>
+
+                            <div class="billing-same">
+                                <input type="checkbox" id="billing-same" checked>
+                                <label for="billing-same">Billing address same as shipping</label>
+                            </div>
+
+                            <div id="payment-status-container"></div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="goToStep('shipping')">Back</button>
+                                <button id="card-button" type="button" class="btn btn-primary btn-large">
+                                    <span id="button-text">Complete Order</span>
+                                    <span id="button-loader" style="display: none;">Processing...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Order Success -->
+                    <section id="success-section" class="checkout-section" style="display: none;">
+                        <div class="success-message">
+                            <div class="success-icon">✓</div>
+                            <h3>Order Confirmed!</h3>
+                            <p>Thank you for your purchase.</p>
+                            <div class="order-details">
+                                <p><strong>Order Number:</strong> <span id="order-number"></span></p>
+                                <p><strong>Email:</strong> <span id="order-email"></span></p>
+                            </div>
+                            <p class="confirmation-text">A confirmation email has been sent to your email address.</p>
+                            <div class="success-actions">
+                                <a href="products.html" class="btn btn-primary">Continue Shopping</a>
+                                <a href="index.html" class="btn btn-secondary">Return to Home</a>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="summary-items" class="summary-items">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    <div class="summary-totals">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="summary-subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="summary-shipping">$9.99</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (10%):</span>
+                            <span id="summary-tax">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="summary-total">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="secure-checkout-badge">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 1L3 5V9C3 13.55 6.84 17.74 10 19C13.16 17.74 17 13.55 17 9V5L10 1Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span>Secure 256-bit SSL encryption</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notification" class="notification"></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TG Clothing Co. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="products-data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>
