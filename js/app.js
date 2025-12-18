@@ -30,18 +30,20 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// Load featured products on home page
+// Load featured products on home page (Clothing only)
 if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
     document.addEventListener('DOMContentLoaded', () => {
         try {
-            const products = getAllProducts();
+            const allProducts = getAllProducts();
+            // Filter to show only Clothing category
+            const clothingProducts = allProducts.filter(p => p.category === 'Clothing');
             const container = document.getElementById('featured-products');
 
             if (container) {
                 container.innerHTML = '';
 
-                // Show first 4 products as featured
-                products.slice(0, 4).forEach(product => {
+                // Show all clothing products (6 bamboo items)
+                clothingProducts.forEach(product => {
                     const card = createProductCard(product);
                     container.appendChild(card);
                 });
